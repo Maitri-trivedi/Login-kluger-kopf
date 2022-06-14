@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>forgot otp</title>
+    <!-- BOOTSTRAP CSS -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="style1.css">
+</head>
+
+<body>
+
+    <form id="form" action="" class="mt-5">
+        <div class="f-container">
+            <img class="validate check" src="" alt="validate-check">
+            <p class="para-forgot-otp">Enter the OTP we sent you on your email.</p>
+            <input class="otp" type="number" id="otp1" oninput="digitValidate(this)" onkeyup="tabChange(1)"
+                maxlength="1" />
+            <input class="otp" type="number" id="otp2" oninput="digitValidate(this)" onkeyup="tabChange(2)"
+                maxlength="1" />
+            <input class="otp" type="number" id="otp3" oninput="digitValidate(this)" onkeyup="tabChange(3)"
+                maxlength="1" />
+            <input class="otp" type="number" id="otp4" oninput="digitValidate(this)" onkeyup="tabChange(4)"
+                maxlength="1" />
+            <button class="validate-otp" id="validate-otp">validate otp</button>
+        </div>
+    </form>
+
+
+    <script src="jquery-3.6.0.min.js"></script>
+
+    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#validate-otp").click(function () {
+                if ($("#otp1").val() == "" || $("#otp2").val() == "" || $("#otp3").val() == "" || $("#otp4").val() == "") {
+                    alert("Please enter valid OTP.");
+                    return false;
+                }
+
+                var otp = $("#otp1").val() + "" + $("#otp2").val() + "" + $("#otp3").val() + "" + $("#otp4").val();
+
+                var result = validateOTP(localStorage.getItem("email"), otp);
+                if (result != "1") {
+                    alert(result);
+                    return false;
+                } else {
+                    window.location.href = "update-password.html";
+                    return false;
+                }
+            });
+        });
+
+        let digitValidate = function (ele) {
+            console.log(ele.value);
+            ele.value = ele.value.replace(/[^0-9]/g, "");
+        };
+
+        let tabChange = function (val) {
+            let ele = document.querySelectorAll("input");
+            if (ele[val - 1].value != "") {
+                ele[val].focus();
+            } else if (ele[val - 1].value == "") {
+                ele[val - 2].focus();
+            }
+        };
+
+        function resendOTP() {
+            var result = reRequestOTP(localStorage.getItem("email"));
+            if (result != "1") {
+                alert(result);
+                return false;
+            } else {
+                alert("We have sent you the OTP on your email. Please check.");
+                return false;
+            }
+        }
+    </script>
+</body>
+
+</html>
